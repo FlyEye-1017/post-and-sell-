@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fly Eye</title>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Bungee&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; }
+
+  /* ---------- GOTHIC HEADER ---------- */
+  header {
+    min-height: 70vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 40px 20px;
+    background:
+      radial-gradient(circle at center, #2a2a2a 0%, #000 70%);
+    border-bottom: 4px double #fff;
+    position: relative; overflow: hidden;
+  }
+  header::before, header::after {
+    content: "✠"; position: absolute; font-size: 120px; color: #1c1c1c;
+  }
+  header::before { top: 20px; left: 30px; }
+  header::after  { bottom: 20px; right: 30px; }
+  .logo {
+    font-family: 'UnifrakturMaguntia', serif;
+    font-size: clamp(70px, 18vw, 180px);
+    color: #fff;
+    text-shadow: 0 0 10px #fff, 0 0 30px #555, 4px 4px 0 #000;
+    letter-spacing: 4px;
+  }
+  .eye { font-size: 50px; margin: 10px 0; filter: grayscale(1); }
+  .tagline { color: #aaa; letter-spacing: 6px; text-transform: uppercase; font-size: 14px; }
+
+  nav { display: flex; justify-content: center; gap: 30px; padding: 16px; background: #000; border-bottom: 1px solid #333; }
+  nav a { color: #ddd; text-decoration: none; text-transform: uppercase; letter-spacing: 3px; font-size: 13px; }
+  nav a:hover { color: #fff; text-decoration: underline; }
+
+  /* ---------- PRODUCT PANELS ---------- */
+  .shop { padding: 50px 20px; background: #111; }
+  .shop h2 { text-align: center; font-family: 'UnifrakturMaguntia', serif; font-size: 48px; margin-bottom: 30px; }
+  .grid {
+    display: grid; gap: 20px; max-width: 1100px; margin: 0 auto;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+  .panel {
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(145deg, #1e1e1e, #050505);
+    border: 2px solid #444; border-radius: 6px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; cursor: pointer;
+    transition: transform .2s, border-color .2s, box-shadow .2s;
+  }
+  .panel:hover { transform: translateY(-6px) rotate(-1deg); border-color: #fff; box-shadow: 0 0 25px #ffffff55; }
+  .panel .pic { font-size: 70px; margin-bottom: 10px; }
+  .panel h3 { font-size: 18px; margin-bottom: 6px; }
+  .panel .price { color: #ffd23f; font-weight: 700; }
+
+  /* ---------- COLORFUL BOTTOM ---------- */
+  .fun {
+    padding: 60px 20px 80px; position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #ff3cac, #784ba0, #2b86c5, #00e0a8, #ffd23f);
+    background-size: 400% 400%; animation: shift 12s ease infinite;
+    color: #111; text-align: center;
+  }
+  @keyframes shift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  .fun h2 { font-family: 'Bungee', sans-serif; font-size: clamp(30px, 6vw, 56px); color: #fff; text-shadow: 3px 3px 0 #111; margin-bottom: 30px; }
+  .ads { display: grid; gap: 20px; max-width: 1000px; margin: 0 auto; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); position: relative; z-index: 2; }
+  .ad {
+    background: #fff; border: 4px solid #111; border-radius: 16px; padding: 25px;
+    box-shadow: 8px 8px 0 #111; transform: rotate(-2deg);
+  }
+  .ad:nth-child(2) { transform: rotate(2deg); }
+  .ad .big { font-size: 60px; }
+  .ad h3 { font-family: 'Bungee', sans-serif; margin: 10px 0; }
+  .ad button {
+    margin-top: 12px; padding: 10px 20px; font-family: 'Bungee', sans-serif;
+    background: #ff3cac; color: #fff; border: 3px solid #111; border-radius: 30px; cursor: pointer;
+  }
+  .ad button:hover { background: #111; }
+
+  .deco { position: absolute; font-size: 44px; z-index: 1; animation: float 4s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-15px) rotate(12deg)} }
+
+  /* ---------- VIDEOS ---------- */
+  .videos { padding: 60px 20px; background: #0a0a0a; text-align: center; border-top: 4px double #fff; }
+  .videos h2 { font-family: 'UnifrakturMaguntia', serif; font-size: 48px; margin-bottom: 8px; }
+  .videos .sub { color: #aaa; margin-bottom: 25px; letter-spacing: 1px; }
+  .upload-btn {
+    display: inline-block; padding: 14px 28px; font-family: 'Bungee', sans-serif;
+    background: #fff; color: #000; border: 3px solid #fff; border-radius: 30px; cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .upload-btn:hover { background: #000; color: #fff; }
+  .video-grid {
+    display: grid; gap: 20px; max-width: 1100px; margin: 35px auto 0;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  .video-box { background: #161616; border: 2px solid #444; border-radius: 8px; padding: 10px; }
+  .video-box video, .video-box img { width: 100%; max-height: 400px; object-fit: contain; border-radius: 4px; background: #000; display: block; }
+  .video-box .warn { color: #ffd23f; font-size: 12px; }
+  .drop-zone {
+    max-width: 700px; margin: 0 auto; padding: 25px 15px;
+    border: 2px dashed #555; border-radius: 12px; transition: border-color .2s, background .2s;
+  }
+  .drop-zone.dragging { border-color: #fff; background: #1a1a1a; }
+  .upload-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .record-btn { background: transparent; color: #fff; }
+  .record-btn:hover { background: #fff; color: #000; }
+  .drop-hint { color: #888; font-size: 13px; margin-top: 14px; }
+  .drop-hint.small { font-size: 11px; color: #666; margin-top: 6px; }
+  .video-box p { color: #ccc; font-size: 13px; margin-top: 8px; word-break: break-all; }
+  .empty { color: #666; grid-column: 1 / -1; }
+
+  /* ---------- SIGN IN ---------- */
+  .overlay {
+    display: none; position: fixed; inset: 0; z-index: 100;
+    background: rgba(0,0,0,.85); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .overlay.show { display: flex; }
+  .signin-card {
+    position: relative; width: 100%; max-width: 400px; text-align: center;
+    background: radial-gradient(circle at top, #2a2a2a, #000 80%);
+    border: 3px double #fff; border-radius: 10px; padding: 30px 25px;
+    box-shadow: 0 0 40px #ffffff33;
+  }
+  .signin-card h2 { font-family: 'UnifrakturMaguntia', serif; font-size: 44px; margin-bottom: 20px; }
+  .eye-small { font-size: 36px; filter: grayscale(1); }
+  .close { position: absolute; top: 10px; right: 14px; background: none; border: none; color: #aaa; font-size: 22px; cursor: pointer; }
+  .signin-card form { text-align: left; }
+  .signin-card label { display: block; color: #ccc; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin: 14px 0 6px; }
+  .signin-card input, .signin-card textarea {
+    width: 100%; padding: 12px; font-size: 16px; font-family: 'Inter', sans-serif;
+    background: #111; color: #fff; border: 2px solid #444; border-radius: 6px; resize: vertical;
+  }
+  .signin-card input:focus, .signin-card textarea:focus { outline: none; border-color: #fff; }
+  .signin-btn, .signout-btn {
+    display: block; width: 100%; margin-top: 22px; padding: 14px; font-family: 'Bungee', sans-serif; font-size: 16px;
+    background: #fff; color: #000; border: 2px solid #fff; border-radius: 30px; cursor: pointer;
+  }
+  .signin-btn:hover { background: #000; color: #fff; }
+  .signout-btn { background: transparent; color: #aaa; border-color: #555; margin-top: 10px; }
+  .prof-user { color: #aaa; margin-bottom: 6px; }
+  #profEmail { margin-bottom: 15px; font-size: 14px; }
+  .err { color: #ff5c7a; font-size: 13px; margin-top: 6px; min-height: 16px; }
+  .prof-about { background: #111; border: 1px solid #333; border-radius: 6px; padding: 14px; color: #ddd; font-style: italic; }
+
+  footer { background: #000; color: #777; text-align: center; padding: 25px; font-size: 13px; letter-spacing: 2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eye">👁️</div>
+  <h1 class="logo">Fly Eye</h1>
+  <p class="tagline">See different. Ride different.</p>
+</header>
+
+<nav>
+  <a href="#shop">Shop</a>
+  <a href="#deals">Deals</a>
+  <a href="#videos">Videos</a>
+  <a href="#contact">Contact</a>
+  <a href="#" id="signInLink">Sign In</a>
+</nav>
+
+<!-- ---------- SIGN IN SCREEN ---------- -->
+<div class="overlay" id="signInScreen">
+  <div class="signin-card">
+    <button class="close" id="closeSignIn" aria-label="Close">✕</button>
+    <div class="eye-small">👁️</div>
+    <h2>Join Fly Eye</h2>
+    <form id="signInForm">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="@flyrider" required maxlength="20">
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="you@example.com" required>
+
+      <label for="code">Personal Code</label>
+      <input type="password" id="code" placeholder="At least 4 characters" required minlength="4" autocomplete="new-password">
+
+      <label for="code2">Confirm Code</label>
+      <input type="password" id="code2" placeholder="Type it again" required minlength="4" autocomplete="new-password">
+      <p class="err" id="signErr"></p>
+
+      <label for="nickname">Nickname</label>
+      <input type="text" id="nickname" placeholder="What should we call you?" maxlength="25">
+
+      <label for="about">What's up with you?</label>
+      <textarea id="about" rows="4" placeholder="Tell everyone what you're about..." maxlength="200"></textarea>
+
+      <button type="submit" class="signin-btn">Create Profile</button>
+    </form>
+  </div>
+</div>
+
+<!-- ---------- UNLOCK SCREEN ---------- -->
+<div class="overlay" id="unlockScreen">
+  <div class="signin-card">
+    <button class="close" id="closeUnlock" aria-label="Close">✕</button>
+    <div class="eye-small">🔒</div>
+    <h2>Welcome Back</h2>
+    <form id="unlockForm">
+      <label for="unlockCode">Enter your Personal Code</label>
+      <input type="password" id="unlockCode" required autocomplete="current-password">
+      <p class="err" id="unlockErr"></p>
+      <button type="submit" class="signin-btn">Unlock</button>
+    </form>
+  </div>
+</div>
+
+<!-- ---------- PROFILE CARD ---------- -->
+<div class="overlay" id="profileScreen">
+  <div class="signin-card">
+    <button class="close" id="closeProfile" aria-label="Close">✕</button>
+    <div class="eye-small">👁️</div>
+    <h2 id="profNick"></h2>
+    <p class="prof-user" id="profUser"></p>
+    <p class="prof-user" id="profEmail"></p>
+    <p class="prof-about" id="profAbout"></p>
+    <button class="signin-btn" id="editProfile">Edit Profile</button>
+    <button class="signout-btn" id="signOut">Sign Out</button>
+  </div>
+</div>
+
+<section class="shop" id="shop">
+  <h2>The Collection</h2>
+  <div class="grid">
+    <div class="panel"><div class="pic">🛹</div><h3>Shadow Deck</h3><p class="price">$79</p></div>
+    <div class="panel"><div class="pic">📺</div><h3>Mini Retro TV</h3><p class="price">$45</p></div>
+    <div class="panel"><div class="pic">👕</div><h3>Fly Eye Tee</h3><p class="price">$30</p></div>
+    <div class="panel"><div class="pic">🧢</div><h3>Gothic Cap</h3><p class="price">$25</p></div>
+    <div class="panel"><div class="pic">🕶️</div><h3>Night Shades</h3><p class="price">$35</p></div>
+    <div class="panel"><div class="pic">🎒</div><h3>Skate Pack</h3><p class="price">$60</p></div>
+  </div>
+</section>
+
+<section class="fun" id="deals">
+  <span class="deco" style="top:5%;left:4%">🛹</span>
+  <span class="deco" style="top:12%;right:6%;animation-delay:1s">📺</span>
+  <span class="deco" style="bottom:8%;left:8%;animation-delay:2s">⭐</span>
+  <span class="deco" style="bottom:12%;right:10%;animation-delay:.5s">🛹</span>
+  <span class="deco" style="top:45%;left:1%;animation-delay:1.5s">🌈</span>
+  <span class="deco" style="top:50%;right:2%;animation-delay:2.5s">📺</span>
+  <span class="deco" style="bottom:2%;left:45%;animation-delay:3s">✨</span>
+
+  <h2>Hot Deals!</h2>
+  <div class="ads">
+    <div class="ad"><div class="big">🛹</div><h3>Boards 20% Off</h3><p>Fresh decks, fresh designs. This week only.</p><button>Shop Boards</button></div>
+    <div class="ad"><div class="big">📺</div><h3>Mini TVs</h3><p>Tiny screens with big retro style for your room.</p><button>See TVs</button></div>
+    <div class="ad"><div class="big">🎁</div><h3>Free Stickers</h3><p>Every order comes with a Fly Eye sticker pack.</p><button>Grab Yours</button></div>
+  </div>
+</section>
+
+<section class="videos" id="videos">
+  <h2>Fly Eye Videos</h2>
+  <p class="sub">Show us your tricks, your setup, your style.</p>
+  <div class="drop-zone" id="dropZone">
+    <div class="upload-row">
+      <label class="upload-btn">
+        📁 Choose Files
+        <input type="file" id="fileInput" multiple hidden
+          accept="video/*,image/*,.mov,.mp4,.m4v,.3gp,.3g2,.webm,.mkv,.avi,.heic,.heif,.jpg,.jpeg,.png,.gif,.webp">
+      </label>
+      <label class="upload-btn record-btn">
+        🎥 Record Video
+        <input type="file" id="recordInput" accept="video/*" capture="environment" hidden>
+      </label>
+    </div>
+    <p class="drop-hint">Works on iPhone, Android and computers. On a computer you can also drag files here.</p>
+    <p class="drop-hint small">Videos: MP4, MOV, M4V, 3GP, WEBM · Photos: JPG, PNG, HEIC, GIF, WEBP</p>
+  </div>
+  <div class="video-grid" id="videoGrid">
+    <p class="empty" id="emptyMsg">No videos yet. Be the first!</p>
+  </div>
+</section>
+
+<script>
+  const grid = document.getElementById('videoGrid');
+  const emptyMsg = document.getElementById('emptyMsg');
+  const dropZone = document.getElementById('dropZone');
+  const VIDEO_EXT = /\.(mov|mp4|m4v|3gp|3g2|webm|mkv|avi)$/i;
+  const IMAGE_EXT = /\.(heic|heif|jpe?g|png|gif|webp)$/i;
+
+  function sizeText(bytes) {
+    return bytes > 1e6 ? (bytes / 1e6).toFixed(1) + ' MB' : Math.round(bytes / 1e3) + ' KB';
+  }
+
+  function note(box, msg) {
+    const p = document.createElement('p');
+    p.className = 'warn';
+    p.textContent = msg;
+    box.appendChild(p);
+  }
+
+  function addFile(file) {
+    const isVideo = file.type.startsWith('video/') || VIDEO_EXT.test(file.name);
+    const isImage = file.type.startsWith('image/') || IMAGE_EXT.test(file.name);
+    if (!isVideo && !isImage) {
+      alertBox(file.name + " isn't a video or photo, so it was skipped.");
+      return;
+    }
+    const box = document.createElement('div');
+    box.className = 'video-box';
+    const url = URL.createObjectURL(file);
+    let media;
+    if (isVideo) {
+      media = document.createElement('video');
+      media.controls = true;
+      media.playsInline = true;
+      media.preload = 'metadata';
+      media.onerror = () => note(box, "This browser can't play this video format. Try opening the site in Safari, or record in 'Most Compatible' (iPhone Settings › Camera › Formats).");
+    } else {
+      media = document.createElement('img');
+      media.alt = file.name;
+      media.onerror = () => note(box, "This browser can't show HEIC photos. iPhone users: Settings › Camera › Formats › Most Compatible saves photos as JPG.");
+    }
+    media.src = url;
+    const name = document.createElement('p');
+    name.textContent = file.name + ' · ' + sizeText(file.size);
+    box.append(media, name);
+    grid.prepend(box);
+    emptyMsg.style.display = 'none';
+  }
+
+  function alertBox(msg) {
+    const box = document.createElement('div');
+    box.className = 'video-box';
+    note(box, msg);
+    grid.prepend(box);
+    setTimeout(() => box.remove(), 5000);
+  }
+
+  function handle(input) {
+    for (const file of input.files) addFile(file);
+    input.value = '';
+  }
+  document.getElementById('fileInput').addEventListener('change', e => handle(e.target));
+  document.getElementById('recordInput').addEventListener('change', e => handle(e.target));
+
+  // Drag and drop (computers)
+  ['dragenter', 'dragover'].forEach(ev => dropZone.addEventListener(ev, e => {
+    e.preventDefault(); dropZone.classList.add('dragging');
+  }));
+  ['dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, e => {
+    e.preventDefault(); dropZone.classList.remove('dragging');
+  }));
+  dropZone.addEventListener('drop', e => {
+    for (const file of e.dataTransfer.files) addFile(file);
+  });
+</script>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const KEY = 'flyEyeProfile';
+  let profile = null;
+  try { profile = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
+
+  function updateNav() {
+    $('signInLink').textContent = profile ? '👁️ ' + (profile.nickname || profile.username) : 'Sign In';
+  }
+  function showProfile() {
+    $('profNick').textContent = profile.nickname || profile.username;
+    $('profUser').textContent = '@' + profile.username.replace(/^@/, '');
+    $('profEmail').textContent = profile.email || '';
+    $('profAbout').textContent = profile.about || "Nothing's up yet.";
+    $('profileScreen').classList.add('show');
+  }
+
+  $('signInLink').addEventListener('click', e => {
+    e.preventDefault();
+    if (profile) {
+      $('unlockForm').reset();
+      $('unlockErr').textContent = '';
+      $('unlockScreen').classList.add('show');
+    } else $('signInScreen').classList.add('show');
+  });
+  $('closeSignIn').onclick = () => $('signInScreen').classList.remove('show');
+  $('closeProfile').onclick = () => $('profileScreen').classList.remove('show');
+  $('closeUnlock').onclick = () => $('unlockScreen').classList.remove('show');
+
+  // Scramble the code so it's never saved as plain text
+  async function hashCode(text) {
+    const data = new TextEncoder().encode('flyeye:' + text);
+    const buf = await crypto.subtle.digest('SHA-256', data);
+    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  $('unlockForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const h = await hashCode($('unlockCode').value);
+    if (h === profile.codeHash) {
+      $('unlockScreen').classList.remove('show');
+      showProfile();
+    } else {
+      $('unlockErr').textContent = 'Wrong code. Try again.';
+    }
+  });
+
+  $('signInForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    if ($('code').value !== $('code2').value) {
+      $('signErr').textContent = "Codes don't match.";
+      return;
+    }
+    $('signErr').textContent = '';
+    profile = {
+      username: $('username').value.trim(),
+      email: $('email').value.trim(),
+      codeHash: await hashCode($('code').value),
+      nickname: $('nickname').value.trim(),
+      about: $('about').value.trim()
+    };
+    $('code').value = $('code2').value = '';
+    try { localStorage.setItem(KEY, JSON.stringify(profile)); } catch (e) {}
+    $('signInScreen').classList.remove('show');
+    updateNav();
+    showProfile();
+  });
+
+  $('editProfile').onclick = () => {
+    $('username').value = profile.username;
+    $('email').value = profile.email || '';
+    $('nickname').value = profile.nickname;
+    $('about').value = profile.about;
+    $('profileScreen').classList.remove('show');
+    $('signInScreen').classList.add('show');
+  };
+  $('signOut').onclick = () => {
+    profile = null;
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    $('signInForm').reset();
+    $('profileScreen').classList.remove('show');
+    updateNav();
+  };
+
+  updateNav();
+</script>
+
+<footer id="contact">
+  © 2026 FLY EYE · ALL RIGHTS RESERVED
+</footer>
+
+</body>
